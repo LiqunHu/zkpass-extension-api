@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "chrome-extension-react",
+  "version": "1.0.0",
+  "description": "chrome-extension-react",
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "permissions": ["contextMenus", "storage", "webRequest"],
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "background": {
+    "service_worker": "static/js/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["static/js/content_script.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": [
+        "images/*.png",
+        "static/js/content.js",
+        "static/js/client.js"
+      ]
+    }
+  ],
+  "options_ui": {
+    "page": "html/options.html",
+    "open_in_tab": true
+  },
+  "default_locale": "zh_CN",
+  "homepage_url": "https://www.jianshu.com/p/9d8ddfe3403e"
+}

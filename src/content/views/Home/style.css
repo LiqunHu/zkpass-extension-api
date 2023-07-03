@@ -1,0 +1,11 @@
+.Page {
+  min-height: 100vh;
+}
+
+.Header {
+  height: '65px';
+}
+
+.Content {
+  height: calc(100% - 65px);
+}

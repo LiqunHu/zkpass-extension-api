@@ -1,0 +1,5 @@
+.plugin_root {
+  position:fixed; 
+  z-index: 9999;
+  width: 75rem;
+}
