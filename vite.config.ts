@@ -22,7 +22,19 @@ export default defineConfig({
       output: {
         chunkFileNames: `static/js/[name].js`,
         entryFileNames: 'static/js/[name].js',
-        assetFileNames: `static/media/[name].[ext]`
+        assetFileNames: (assetInfo) => {
+          let extType = assetInfo.name.split('.').at(1);
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            extType = 'img';
+          } else if (/css/i.test(extType)) {
+            extType = 'css';
+          } else if (/ttf/i.test(extType)) {
+            extType = 'fonts';
+          } else if (/ttf/i.test(extType)) {
+            extType = 'media';
+          }
+          return `static/${extType}/[name][extname]`;
+        },
       }
     }
   }

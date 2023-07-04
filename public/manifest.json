@@ -20,6 +20,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["static/js/content_script.js"],
+      "css": ["static/css/content.css"],
       "run_at": "document_start"
     }
   ],
@@ -28,6 +29,7 @@
       "matches": ["<all_urls>"],
       "resources": [
         "images/*.png",
+        "static/media/*.css",
         "static/js/content.js",
         "static/js/client.js"
       ]

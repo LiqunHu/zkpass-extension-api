@@ -11,6 +11,7 @@ import './App.css'
 const mask = document.createElement('div')
 mask.className = 'plugin_root'
 mask.setAttribute('id', 'plugin-mask')  
+// document.body.insertBefore(mask, document.body.firstChild)
 document.body.appendChild(mask)
 
 const root = ReactDOM.createRoot(mask)
