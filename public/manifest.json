@@ -8,7 +8,7 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
-  "permissions": ["contextMenus", "storage", "webRequest"],
+  "permissions": ["tabs", "contextMenus", "storage", "webRequest", "debugger" ],
   "action": {
     "default_popup": "html/popup.html"
   },
@@ -20,7 +20,6 @@
     {
       "matches": ["<all_urls>"],
       "js": ["static/js/content_script.js"],
-      "css": ["static/css/content.css"],
       "run_at": "document_start"
     }
   ],
