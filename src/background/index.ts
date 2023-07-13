@@ -200,6 +200,8 @@ chrome.tabs.onRemoved.addListener(function (tabId) {
   if (tabs[tabId]) {
     chrome.debugger.detach({
       tabId: tabId
+    }).catch((err) => {
+      console.log(err)
     })
     delete tabs[tabId]
     console.log('out tabs', tabs)
