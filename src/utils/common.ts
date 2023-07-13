@@ -24,4 +24,6 @@ const dataURL2File = function (dataurl: string, filename: string) {
   return new File([u8arr], filename, { type: mime })
 }
 
-export default { file2DataURL, dataURL2File }
+const exportFunc = { file2DataURL, dataURL2File }
+
+export default exportFunc

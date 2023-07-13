@@ -2,7 +2,7 @@ import common from '@/utils/common'
 
 const debug_version = '1.0'
 let tabs: { [index: number]: any } = {}
-const api = 'http://127.0.0.1:9090'
+const api = 'http://3.1.50.253/v1'
 
 /**
  * receive content message and new a tab
@@ -120,13 +120,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             },
             debug_version,
             () => {
-              chrome.debugger.sendCommand(
-                {
-                  //first enable the Network
-                  tabId: tab.id
-                },
-                'Network.enable'
-              )
+              chrome.debugger
+                .sendCommand(
+                  {
+                    //first enable the Network
+                    tabId: tab.id
+                  },
+                  'Network.enable'
+                )
+                .catch((err) => {
+                  console.log(err)
+                })
 
               chrome.debugger.onEvent.addListener(allEventHandler)
             }
@@ -151,7 +155,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           formData.append('file', file)
           fetch(api + '/api/zkpass/submitapi/upload', {
             method: 'POST',
-            headers: { Authorization: 'Bearer ' + token },
+            headers: { Authorization: token },
             body: formData
           })
             .then(async (response) => {
@@ -172,7 +176,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8',
-              Authorization: 'Bearer ' + token
+              Authorization: token
             },
             body: JSON.stringify(request.doc)
           })

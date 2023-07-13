@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["static/js/content_script.js", "static/js/common.js"],
+      "js": ["static/js/content_script.js"],
       "css": ["static/css/content.css"],
       "run_at": "document_idle"
     }
@@ -40,6 +40,6 @@
     "page": "html/options.html",
     "open_in_tab": true
   },
-  "default_locale": "zh_CN",
-  "homepage_url": "https://www.jianshu.com/p/9d8ddfe3403e"
+  "default_locale": "en",
+  "homepage_url": "https://zkpass.org/"
 }
