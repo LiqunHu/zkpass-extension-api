@@ -1,6 +1,6 @@
 import './style.css'
 import { useEffect, useState } from 'react'
-import { PlusOutlined } from '@ant-design/icons'
+// import { PlusOutlined } from '@ant-design/icons'
 import { Modal, Upload, Select, Button, Input } from 'antd'
 import ReactJson from 'react-json-view'
 import type { RcFile, UploadProps } from 'antd/es/upload'
@@ -35,14 +35,14 @@ const categoryOptions = [
 ]
 
 interface XHRReq {
-  request: any,
+  request: any
   response: any
 }
 
 const uploadButton = (
   <div>
-    <PlusOutlined />
-    <div style={{ marginTop: 8 }}>Upload</div>
+    {/*<PlusOutlined />*/}
+    <div style={{ marginTop: 8, color: '#fff' }}>Upload</div>
   </div>
 )
 
@@ -110,7 +110,7 @@ function Home() {
         method: 'SUBMIT',
         doc: {
           domain: window.location.host,
-          files: fileList.map((f)=>f.response.info.url),
+          files: fileList.map((f) => f.response.info.url),
           country: selectedCountry,
           category: selectedCategory,
           discord,
@@ -121,7 +121,9 @@ function Home() {
       .then((resp) => {
         console.log(resp)
       })
-      .catch((err)=>{console.log(err)})
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   useEffect(() => {
@@ -133,8 +135,8 @@ function Home() {
   }, [])
 
   return (
-    <div className="container">
-      <div className="uploadimg">
+    <div className="zkpass-container">
+      <div className="zkpass-uploadimg">
         <Upload
           listType="picture-card"
           fileList={fileList}
@@ -145,39 +147,42 @@ function Home() {
           {fileList.length >= 6 ? null : uploadButton}
         </Upload>
       </div>
-      <div className="options">
-        <div>Country:</div>
-        <Select
-          placeholder="Country"
-          value={selectedCountry}
-          onChange={setSelectedCountry}
-          style={{ width: 100 }}
-          options={countryOptions}
-          allowClear={true}
-        />
-        <div>Category:</div>
-        <Select
-          placeholder="Category"
-          value={selectedCategory}
-          onChange={setSelectedCategory}
-          style={{ width: 100 }}
-          options={categoryOptions}
-          allowClear={true}
-        />
-      </div>
-      <div>
-        <div>Discord</div>
-        <div>
-          <Input
-            value={discord}
-            onChange={(e) => {
-              setDiscord(e.target.value)
-            }}
+      <div className="zkpass-option-box">
+        <div className="zkpass-option">
+          <div className="zkpass-option-label">Country:</div>
+          <Select
+            placeholder="Country"
+            value={selectedCountry}
+            onChange={setSelectedCountry}
+            style={{ flex: 1 }}
+            options={countryOptions}
+            allowClear={true}
+          />
+        </div>
+        <div className="zkpass-option">
+          <div className="zkpass-option-label">Category:</div>
+          <Select
+            placeholder="Category"
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+            style={{ flex: 1 }}
+            options={categoryOptions}
+            allowClear={true}
           />
         </div>
       </div>
-      <div className="describe">
-        <div>describe(option)</div>
+      <div className="zkpass-option-box">
+        <div className="zkpass-option-label">Discord</div>
+        <Input
+          style={{ flex: 1 }}
+          value={discord}
+          onChange={(e) => {
+            setDiscord(e.target.value)
+          }}
+        />
+      </div>
+      <div className="zkpass-describe">
+        <div style={{ color: '#fff' }}>describe(option)</div>
         <TextArea
           rows={4}
           placeholder="describe"
@@ -188,9 +193,9 @@ function Home() {
           }}
         />
       </div>
-      <div className="data">
+      <div className="zkpass-data">
         <div>Page Data</div>
-        <div className="data-body">
+        <div className="zkpass-data-body">
           <div>
             {XHRList.map((item) => {
               return (
@@ -211,8 +216,10 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <Button type="primary" onClick={handleSubmit}>Submit</Button>
+      <div className="zkpass-footer">
+        <Button type="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
       </div>
       <Modal
         open={previewOpen}
