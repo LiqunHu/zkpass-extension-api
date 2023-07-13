@@ -1,11 +1,46 @@
-.Page {
-  min-height: 100vh;
+.container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 25rem;
+  background-color: yellow;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.Header {
-  height: '65px';
+.uploadimg {
+  padding: 0.5rem;
+  width: 100%;
+  height: 15rem;
+  background-color: green;
 }
 
-.Content {
-  height: calc(100% - 65px);
+.options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.describe {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.data {
+  padding: 1rem 1rem;
+  width: 100%;
+  height: auto;
+  background-color: aqua;
+}
+
+.data-body {
+  display: grid;
+  grid-template-columns: 10rem auto;
+}
+
+.footer {
+  height: 2rem;
+  display: grid;
+  background-color: blue;
 }

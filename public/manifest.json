@@ -19,8 +19,9 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["static/js/content_script.js"],
-      "run_at": "document_start"
+      "js": ["static/js/content_script.js", "static/js/common.js"],
+      "css": ["static/css/content.css"],
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
@@ -28,7 +29,8 @@
       "matches": ["<all_urls>"],
       "resources": [
         "images/*.png",
-        "static/media/*.css",
+        "static/css/*.css",
+        "static/js/common.js",
         "static/js/content.js",
         "static/js/client.js"
       ]

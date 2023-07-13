@@ -10,21 +10,30 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "5.1.4",
     "@reduxjs/toolkit": "1.9.5",
-    "antd": "^5.6.3",
-    "axios": "^1.4.0",
+    "antd": "5.6.3",
+    "country-list": "2.3.0",
     "dayjs": "^1.11.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-json-view": "1.21.3",
     "react-redux": "8.1.0",
     "react-router-dom": "6.14.1"
   },
+  "overrides": {
+    "react-json-view": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
+  },
   "devDependencies": {
     "@types/chrome": "0.0.239",
-    "@types/react-router-dom": "5.3.3",
+    "@types/country-list": "2.1.1",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@types/react-router-dom": "5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "@vitejs/plugin-react-swc": "^3.0.0",

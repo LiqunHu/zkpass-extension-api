@@ -1,12 +1,13 @@
+import common from '@/utils/common'
+
 const debug_version = '1.0'
-let genTabId: any = null
-let genWindowId: any = null
 let tabs: { [index: number]: any } = {}
+const api = 'http://127.0.0.1:9090'
 
 /**
  * receive content message and new a tab
  */
-chrome.runtime.onMessage.addListener((request) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request) {
     if (request.method == 'POPUP') {
       console.log('chrome.runtime.onMessage POPUP')
@@ -17,17 +18,15 @@ chrome.runtime.onMessage.addListener((request) => {
         },
         (tab: any) => {
           tabs[tab.id] = {
+            token: request.token,
             windowId: tab.windowId,
             requests: new Map()
           }
-          console.log('in tabs', tabs)
 
           function allEventHandler(debuggeeId: any, message: any, params: any) {
             if (!tabs[debuggeeId.tabId]) {
               return
             }
-
-            console.log(message)
 
             if (message == 'Network.requestWillBeSent') {
               if (params.request) {
@@ -44,11 +43,24 @@ chrome.runtime.onMessage.addListener((request) => {
                   params.requestId
                 )
                 if (request === undefined) {
-                  console.log(params.requestId, '#not found request')
+                  // console.log(params.requestId, '#not found request')
                   return
                 }
-                request.set('response', params.response)
-                tabs[debuggeeId.tabId].requests.set(params.requestId, request)
+                if (params.response.headers['Content-Type']) {
+                  if (
+                    params.response.headers['Content-Type'].indexOf(
+                      'application/json'
+                    ) >= 0
+                  ) {
+                    request.set('response', params.response)
+                    tabs[debuggeeId.tabId].requests.set(
+                      params.requestId,
+                      request
+                    )
+                    return
+                  }
+                }
+                tabs[debuggeeId.tabId].requests.delete(params.requestId)
               }
             }
 
@@ -57,7 +69,7 @@ chrome.runtime.onMessage.addListener((request) => {
                 params.requestId
               )
               if (request === undefined) {
-                console.log(params.requestId, '#not found request')
+                // console.log(params.requestId, '#not found request')
                 return
               }
 
@@ -76,7 +88,22 @@ chrome.runtime.onMessage.addListener((request) => {
                       params.requestId,
                       request
                     )
-                    console.log(request)
+                    let req = request.get('request')
+                    let body = request.get('response_body').body
+                    if (req && body) {
+                      chrome.tabs
+                        .sendMessage(debuggeeId.tabId, {
+                          method: 'XHRJSON',
+                          doc: {
+                            request: req,
+                            response: JSON.parse(body)
+                          }
+                        })
+                        .catch((err) => {
+                          console.log(err)
+                        })
+                    }
+
                     tabs[debuggeeId.tabId].requests.delete(params.requestId)
                   } else {
                     console.log('empty')
@@ -84,25 +111,6 @@ chrome.runtime.onMessage.addListener((request) => {
                 }
               )
             }
-
-            // if (message == 'Network.responseReceived') {
-            //   //response return
-            //   chrome.debugger.sendCommand(
-            //     {
-            //       tabId: debuggeeId.tabId
-            //     },
-            //     'Network.getResponseBody',
-            //     {
-            //       requestId: params.requestId
-            //     },
-            //     function (response) {
-            //       // you get the response body here!
-            //       // you can close the debugger tips by:
-            //       console.log(response)
-            //       // chrome.debugger.detach(debuggeeId)
-            //     }
-            //   )
-            // }
           }
 
           chrome.debugger.attach(
@@ -125,47 +133,67 @@ chrome.runtime.onMessage.addListener((request) => {
           )
         }
       )
-
-      // chrome.windows.getCurrent((w) => {
-      //   chrome.tabs.query({ active: true, windowId: w.id }, (tabs) => {
-      //     genTabId = tabs[0].id
-      //     genWindowId = w.id
-      //     console.log('request.data', request.data)
-      //     popupWindow(request)
-      //     tabs.push({
-      //       tabId:
-      //     })
-      //   })
-      // })
+    } else if (request.method == 'CHECKPOP') {
+      const tabId = sender.tab?.id
+      if (tabId) {
+        if (tabs.hasOwnProperty(tabId)) {
+          sendResponse(true)
+        }
+      }
+      sendResponse(false)
+    } else if (request.method == 'UPLOAD') {
+      const tabId = sender.tab?.id
+      if (tabId) {
+        if (tabs.hasOwnProperty(tabId)) {
+          let token = tabs[tabId].token
+          let file = common.dataURL2File(request.doc.data, request.doc.name)
+          const formData = new FormData()
+          formData.append('file', file)
+          fetch(api + '/api/zkpass/submitapi/upload', {
+            method: 'POST',
+            headers: { Authorization: 'Bearer ' + token },
+            body: formData
+          })
+            .then(async (response) => {
+              let rsp = await response.json()
+              sendResponse(rsp)
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        }
+      }
+    } else if (request.method == 'SUBMIT') {
+      const tabId = sender.tab?.id
+      if (tabId) {
+        if (tabs.hasOwnProperty(tabId)) {
+          let token = tabs[tabId].token
+          fetch(api + '/api/zkpass/submitapi/submitAPI', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              Authorization: 'Bearer ' + token
+            },
+            body: JSON.stringify(request.doc)
+          })
+            .then(async (response) => {
+              let rsp = await response.json()
+              sendResponse(rsp)
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        }
+      }
     }
   }
   return true
 })
 
-// function popupWindow(request: any) {
-//   if (chrome) {
-//     chrome.webRequest.onCompleted.addListener(
-//       function (details) {
-//         console.log(details)
-//       },
-//       { urls: ['<all_urls>'], types: ["xmlhttprequest"]},
-//       ["responseHeaders","extraHeaders"]
-//     )
-//     chrome.tabs.create(
-//       {
-//         url: request.url
-//       },
-//       (tab) => {
-//         console.log('tab', tab)
-//       }
-//     )
-//   }
-// }
-
 chrome.tabs.onRemoved.addListener(function (tabId) {
   console.log('removed', tabId)
 
-  if (Object.keys(tabs).indexOf(tabId + '') >= 0) {
+  if (tabs[tabId]) {
     chrome.debugger.detach({
       tabId: tabId
     })
