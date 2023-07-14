@@ -47,12 +47,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                   // console.log(params.requestId, '#not found request')
                   return
                 }
-                if (params.response.headers['Content-Type']) {
-                  if (
-                    params.response.headers['Content-Type'].indexOf(
-                      'application/json'
-                    ) >= 0
-                  ) {
+                let content =
+                  params.response.headers['Content-Type'] ||
+                  params.response.headers['content-type']
+                if (content) {
+                  if (content.indexOf('application/json') >= 0) {
                     request.set('response', params.response)
                     tabs[debuggeeId.tabId].requests.set(
                       params.requestId,
