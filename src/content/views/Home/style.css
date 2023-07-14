@@ -8,7 +8,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 10000000000;
+  overflow-y: auto;
+  padding: 0.5rem;
+  z-index: 999
 }
 
 .zkpass-uploadimg {
@@ -37,23 +39,29 @@
 
 .zkpass-describe {
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .zkpass-data {
-  padding: 1rem 1rem;
+  padding: 1rem;
   width: 100%;
   height: auto;
-  background-color: aqua;
-}
-
-.zkpass-data-body {
-  display: grid;
-  grid-template-columns: 10rem auto;
 }
 
 .zkpass-footer {
-  height: 2rem;
-  display: grid;
-  background-color: blue;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  width: 100%;
+  padding-right: 1rem;
+}
+.zkpass-submit-btn {
+  background: #666;
+  color: #fff;
+  width: 100px;
+  border: none;
+  height: 35px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }

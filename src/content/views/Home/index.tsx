@@ -1,13 +1,14 @@
 import './style.css'
 import { useEffect, useState } from 'react'
 // import { PlusOutlined } from '@ant-design/icons'
-import { Modal, Upload, Select, Button, Input } from 'antd'
+import { Modal, Upload, Select, Input, Table } from 'antd'
 import ReactJson from 'react-json-view'
 import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { getCodeList } from 'country-list'
 import common from '@/utils/common'
 const { TextArea } = Input
+const { Column } = Table
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -56,8 +57,8 @@ function Home() {
   const [discord, setDiscord] = useState('')
   const [describe, setDescribe] = useState('')
   const [XHRList, setXHRList] = useState<XHRReq[]>([])
-  const [responseData, setResponseData] = useState({})
-  const [method, setMethod] = useState('')
+  // const [responseData, setResponseData] = useState({})
+  // const [method, setMethod] = useState('')
 
   const handleCancel = () => setPreviewOpen(false)
   const handlePreview = async (file: UploadFile) => {
@@ -128,15 +129,15 @@ function Home() {
 
   useEffect(() => {
     chrome.runtime
-    .sendMessage({
-      method: 'GETXHRJSON'
-    })
-    .then((resp) => {
-      setXHRList([...resp])
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .sendMessage({
+        method: 'GETXHRJSON'
+      })
+      .then((resp) => {
+        setXHRList([...resp])
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     chrome.runtime.onMessage.addListener(function (request) {
       if (request.method === 'XHRJSON') {
         setXHRList([...request.doc])
@@ -204,32 +205,64 @@ function Home() {
         />
       </div>
       <div className="zkpass-data">
-        <div>Page Data</div>
-        <div className="zkpass-data-body">
-          <div>
-            {XHRList.map((item) => {
-              return (
-                <div
-                  onClick={() => {
-                    setMethod(item.request.method)
-                    setResponseData(item.response)
-                  }}
-                >
-                  {item.request.url.replace(/^.*\/\/[^\/]+/, '')}
-                </div>
-              )
-            })}
-          </div>
-          <div>
-            <div>{method}</div>
-            <ReactJson src={responseData} />
-          </div>
-        </div>
+        <div style={{ color: '#fff' }}>Network</div>
+        <Table
+          dataSource={XHRList}
+          size="small"
+          bordered={true}
+          pagination={false}
+        >
+          <Column
+            title="Name"
+            dataIndex="request"
+            key="name"
+            render={(request: any) => (
+              <div>{request.url.replace(/^.*\/\/[^\/]+/, '')}</div>
+            )}
+            ellipsis={true}
+            width={250}
+          />
+          <Column
+            title="Method"
+            dataIndex="request"
+            key="method"
+            render={(request: any) => <div>{request.method}</div>}
+            width={80}
+          />
+          <Column
+            title="Content"
+            dataIndex="response"
+            key="response"
+            render={(response: any) => (
+              <ReactJson src={response} collapsed={true} />
+            )}
+          />
+        </Table>
+        {/*<div className="zkpass-data-body">*/}
+        {/*  <div>*/}
+        {/*    {XHRList.map((item) => {*/}
+        {/*      return (*/}
+        {/*        <div*/}
+        {/*          onClick={() => {*/}
+        {/*            setMethod(item.request.method)*/}
+        {/*            setResponseData(item.response)*/}
+        {/*          }}*/}
+        {/*        >*/}
+        {/*          {item.request.url.replace(/^.*\/\/[^\/]+/, '')}*/}
+        {/*        </div>*/}
+        {/*      )*/}
+        {/*    })}*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <div>{method}</div>*/}
+        {/*    <ReactJson src={responseData} />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
       <div className="zkpass-footer">
-        <Button type="primary" onClick={handleSubmit}>
+        <button className="zkpass-submit-btn" onClick={handleSubmit}>
           Submit
-        </Button>
+        </button>
       </div>
       <Modal
         open={previewOpen}
