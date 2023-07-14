@@ -127,9 +127,19 @@ function Home() {
   }
 
   useEffect(() => {
+    chrome.runtime
+    .sendMessage({
+      method: 'GETXHRJSON'
+    })
+    .then((resp) => {
+      setXHRList([...resp])
+    })
+    .catch((err) => {
+      console.log(err)
+    })
     chrome.runtime.onMessage.addListener(function (request) {
       if (request.method === 'XHRJSON') {
-        setXHRList((current) => [...current, request.doc])
+        setXHRList([...request.doc])
       }
     })
   }, [])

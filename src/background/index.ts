@@ -20,7 +20,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           tabs[tab.id] = {
             token: request.token,
             windowId: tab.windowId,
-            requests: new Map()
+            requests: new Map(),
+            xhrjson: []
           }
 
           function allEventHandler(debuggeeId: any, message: any, params: any) {
@@ -91,19 +92,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     let req = request.get('request')
                     let body = request.get('response_body').body
                     if (req && body) {
+                      tabs[debuggeeId.tabId].xhrjson.push({
+                        request: req,
+                        response: JSON.parse(body)
+                      })
                       chrome.tabs
                         .sendMessage(debuggeeId.tabId, {
                           method: 'XHRJSON',
-                          doc: {
-                            request: req,
-                            response: JSON.parse(body)
-                          }
+                          doc: tabs[debuggeeId.tabId].xhrjson
                         })
                         .catch((err) => {
                           console.log(err)
                         })
                     }
-
                     tabs[debuggeeId.tabId].requests.delete(params.requestId)
                   } else {
                     console.log('empty')
@@ -145,6 +146,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
       }
       sendResponse(false)
+    } else if (request.method == 'GETXHRJSON') {
+      const tabId = sender.tab?.id
+      if (tabId) {
+        if (tabs.hasOwnProperty(tabId)) {
+          sendResponse(tabs[tabId].xhrjson)
+        }
+      }
     } else if (request.method == 'UPLOAD') {
       const tabId = sender.tab?.id
       if (tabId) {
@@ -198,11 +206,13 @@ chrome.tabs.onRemoved.addListener(function (tabId) {
   console.log('removed', tabId)
 
   if (tabs[tabId]) {
-    chrome.debugger.detach({
-      tabId: tabId
-    }).catch((err) => {
-      console.log(err)
-    })
+    chrome.debugger
+      .detach({
+        tabId: tabId
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     delete tabs[tabId]
     console.log('out tabs', tabs)
   }
