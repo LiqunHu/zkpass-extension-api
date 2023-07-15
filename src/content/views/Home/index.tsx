@@ -7,6 +7,7 @@ import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { getCodeList } from 'country-list'
 import common from '@/utils/common'
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
 const { TextArea } = Input
 const { Column } = Table
 
@@ -57,6 +58,7 @@ function Home() {
   const [discord, setDiscord] = useState('')
   const [describe, setDescribe] = useState('')
   const [XHRList, setXHRList] = useState<XHRReq[]>([])
+  const [isSpread, setIsSpread] = useState<Boolean>(true)
   // const [responseData, setResponseData] = useState({})
   // const [method, setMethod] = useState('')
 
@@ -145,8 +147,22 @@ function Home() {
     })
   }, [])
 
+  function handleSpread() {
+    setIsSpread(!isSpread)
+  }
+
   return (
-    <div className="zkpass-container">
+    <div className={isSpread ? 'zkpass-container' : 'zkpass-hidden'}>
+      <div
+        className={isSpread ? 'zkpass-spread-btn' : 'zkpass-hidden-btn'}
+        onClick={handleSpread}
+      >
+        {isSpread ? (
+          <FullscreenExitOutlined style={{ color: '#fff' }} />
+        ) : (
+          <FullscreenOutlined style={{ color: '#fff' }} />
+        )}
+      </div>
       <div className="zkpass-uploadimg">
         <Upload
           listType="picture-card"
@@ -211,6 +227,7 @@ function Home() {
           size="small"
           bordered={true}
           pagination={false}
+          scroll={{ y: '15rem' }}
         >
           <Column
             title="Name"
