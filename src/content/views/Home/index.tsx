@@ -181,6 +181,7 @@ function Home() {
             placeholder="Country"
             value={selectedCountry}
             onChange={setSelectedCountry}
+            dropdownStyle={{zIndex: 99999999999}}
             style={{ flex: 1 }}
             options={countryOptions}
             allowClear={true}
@@ -192,6 +193,7 @@ function Home() {
             placeholder="Category"
             value={selectedCategory}
             onChange={setSelectedCategory}
+            dropdownStyle={{zIndex: 99999999999}}
             style={{ flex: 1 }}
             options={categoryOptions}
             allowClear={true}
