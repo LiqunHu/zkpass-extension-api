@@ -1,7 +1,7 @@
 import './style.css'
 import { useEffect, useState } from 'react'
 // import { PlusOutlined } from '@ant-design/icons'
-import { Modal, Upload, Select, Input, Table } from 'antd'
+import { Modal, Upload, Select, Input, Table, notification } from 'antd'
 import ReactJson from 'react-json-view'
 import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
@@ -10,6 +10,7 @@ import common from '@/utils/common'
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
 const { TextArea } = Input
 const { Column } = Table
+const zIndex = 99999999999
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -59,6 +60,8 @@ function Home() {
   const [describe, setDescribe] = useState('')
   const [XHRList, setXHRList] = useState<XHRReq[]>([])
   const [isSpread, setIsSpread] = useState<Boolean>(true)
+  const [api, contextHolder] = notification.useNotification()
+
   // const [responseData, setResponseData] = useState({})
   // const [method, setMethod] = useState('')
 
@@ -122,10 +125,23 @@ function Home() {
         }
       })
       .then((resp) => {
+        if (resp?.errno == 0) {
+          api.success({
+            message: 'Submit success'
+          })
+          setTimeout(() => setIsSpread(false), 500)
+        } else {
+          api.error({
+            message: `${resp?.msg || 'Internal error'}`
+          })
+        }
         console.log(resp)
       })
       .catch((err) => {
-        console.log(err)
+        api.error({
+          message: `${err?.message || 'Internal error'}`
+        })
+        console.error(err)
       })
   }
 
@@ -153,6 +169,7 @@ function Home() {
 
   return (
     <div className={isSpread ? 'zkpass-container' : 'zkpass-hidden'}>
+      {contextHolder}
       <div
         className={isSpread ? 'zkpass-spread-btn' : 'zkpass-hidden-btn'}
         onClick={handleSpread}
@@ -181,7 +198,7 @@ function Home() {
             placeholder="Country"
             value={selectedCountry}
             onChange={setSelectedCountry}
-            dropdownStyle={{zIndex: 99999999999}}
+            dropdownStyle={{ zIndex }}
             style={{ flex: 1 }}
             options={countryOptions}
             allowClear={true}
@@ -193,7 +210,7 @@ function Home() {
             placeholder="Category"
             value={selectedCategory}
             onChange={setSelectedCategory}
-            dropdownStyle={{zIndex: 99999999999}}
+            dropdownStyle={{ zIndex }}
             style={{ flex: 1 }}
             options={categoryOptions}
             allowClear={true}

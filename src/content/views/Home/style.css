@@ -101,3 +101,7 @@
   background: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
+/*提升ant 通知的层级*/
+.ant-notification{
+  z-index: 9999999999999 !important;
+}
