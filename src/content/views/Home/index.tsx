@@ -7,7 +7,7 @@ import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { getCodeList } from 'country-list'
 import common from '@/utils/common'
-import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
 const { TextArea } = Input
 const { Column } = Table
 const zIndex = 99999999999
@@ -126,10 +126,7 @@ function Home() {
       })
       .then((resp) => {
         if (resp?.errno == 0) {
-          api.success({
-            message: 'Submit success'
-          })
-          setTimeout(() => setIsSpread(false), 500)
+          window.close()
         } else {
           api.error({
             message: `${resp?.msg || 'Internal error'}`
@@ -296,7 +293,19 @@ function Home() {
         {/*</div>*/}
       </div>
       <div className="zkpass-footer">
-        <button className="zkpass-submit-btn" onClick={handleSubmit}>
+        <button
+          className="zkpass-submit-btn"
+          onClick={() => {
+            Modal.confirm({
+              title: 'Confirm',
+              icon: <ExclamationCircleOutlined />,
+              content: 'Confirm to submit?',
+              okText: 'Yes',
+              cancelText: 'No',
+              onOk: handleSubmit 
+            })
+          }}
+        >
           Submit
         </button>
       </div>
