@@ -3,6 +3,7 @@ import common from '@/utils/common'
 const debug_version = '1.0'
 let tabs: { [index: number]: any } = {}
 const api = 'http://3.1.50.253/v1'
+// const api = 'http://127.0.0.1:9090'
 
 /**
  * receive content message and new a tab
