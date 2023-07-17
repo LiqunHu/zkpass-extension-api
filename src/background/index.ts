@@ -94,7 +94,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     if (req && body) {
                       tabs[debuggeeId.tabId].xhrjson.push({
                         request: req,
-                        response: JSON.parse(body)
+                        response: desensitization(JSON.parse(body))
                       })
                       chrome.tabs
                         .sendMessage(debuggeeId.tabId, {
@@ -217,3 +217,27 @@ chrome.tabs.onRemoved.addListener(function (tabId) {
     console.log('out tabs', tabs)
   }
 })
+
+function desensitization(input: any): any {
+  let t = typeof input
+  if (input === null) {
+    return null
+  } else if (t === 'number') {
+    return 0
+  } else if (t === 'string') {
+    return '*'
+  } else if (t === 'boolean') {
+    return true
+  } else if (t === 'object') {
+    if (Array.isArray(input)) {
+      return input.map((item: any) => {
+        return desensitization(item)
+      })
+    } else {
+      for (let k in input) {
+        input[k] = desensitization(input[k])
+      }
+      return input
+    }
+  }
+}
