@@ -1,4 +1,4 @@
-.zkpass-container {
+.zkpass_container {
   position: fixed;
   right: 0;
   top: 0;
@@ -12,13 +12,13 @@
   padding: 0.5rem;
   z-index: 9999999999;
 }
-.zkpass-hidden {
+.zkpass_hidden {
   position: fixed;
-  z-index: 9999999999;
+  display: none;
   width: 0;
   height: 0;
 }
-.zkpass-spread-btn {
+.zkpass_spread_btn {
   position: fixed;
   z-index: 9999999999;
   width: 2.5rem;
@@ -33,7 +33,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
-.zkpass-hidden-btn {
+.zkpass_hidden_btn {
   position: fixed;
   z-index: 9999999999;
   width: 2.5rem;
@@ -49,49 +49,49 @@
   cursor: pointer;
 }
 
-.zkpass-uploadimg {
+.zkpass_uploadimg {
   padding: 0.5rem;
   width: 100%;
   max-height: 15rem;
 }
 
-.zkpass-option-box {
+.zkpass_option_box {
   display: flex;
   align-items: center;
   color: #fff;
   width: 100%;
   padding: 0.5rem;
 }
-.zkpass-option {
+.zkpass_option {
   flex: 1;
   display: flex;
   align-items: center;
 }
-.zkpass-option-label {
+.zkpass_option_label {
   display: flex;
   width: 70px;
   justify-content: center;
 }
 
-.zkpass-describe {
+.zkpass_describe {
   width: 100%;
   padding: 1rem;
 }
 
-.zkpass-data {
+.zkpass_data {
   padding: 1rem;
   width: 100%;
   height: auto;
 }
 
-.zkpass-footer {
+.zkpass_footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
   width: 100%;
   padding-right: 1rem;
 }
-.zkpass-submit-btn {
+.zkpass_submit_btn {
   background: #666;
   color: #fff;
   width: 100px;

@@ -1,4 +1,4 @@
-import './style.css'
+import s from './style.module.css'
 import { useEffect, useState } from 'react'
 // import { PlusOutlined } from '@ant-design/icons'
 import { Modal, Upload, Select, Input, Table, notification } from 'antd'
@@ -165,10 +165,9 @@ function Home() {
   }
 
   return (
-    <div className={isSpread ? 'zkpass-container' : 'zkpass-hidden'}>
-      {contextHolder}
+    <div>
       <div
-        className={isSpread ? 'zkpass-spread-btn' : 'zkpass-hidden-btn'}
+        className={isSpread ? s.zkpass_spread_btn : s.zkpass_hidden_btn}
         onClick={handleSpread}
       >
         {isSpread ? (
@@ -177,7 +176,9 @@ function Home() {
           <FullscreenOutlined style={{ color: '#fff' }} />
         )}
       </div>
-      <div className="zkpass-uploadimg">
+      <div className={isSpread ? s.zkpass_container : s.zkpass_hidden}>
+      {contextHolder}
+      <div className={s.zkpass_uploadimg}>
         <Upload
           listType="picture-card"
           fileList={fileList}
@@ -188,9 +189,9 @@ function Home() {
           {fileList.length >= 6 ? null : uploadButton}
         </Upload>
       </div>
-      <div className="zkpass-option-box">
-        <div className="zkpass-option">
-          <div className="zkpass-option-label">Country:</div>
+      <div className={s.zkpass_option_box}>
+        <div className={s.zkpass_option}>
+          <div className={s.zkpass_option_label}>Country:</div>
           <Select
             placeholder="Country"
             value={selectedCountry}
@@ -201,8 +202,8 @@ function Home() {
             allowClear={true}
           />
         </div>
-        <div className="zkpass-option">
-          <div className="zkpass-option-label">Category:</div>
+        <div className={s.zkpass_option}>
+          <div className={s.zkpass_option_label}>Category:</div>
           <Select
             placeholder="Category"
             value={selectedCategory}
@@ -214,8 +215,8 @@ function Home() {
           />
         </div>
       </div>
-      <div className="zkpass-option-box">
-        <div className="zkpass-option-label">Discord</div>
+      <div className={s.zkpass_option_box}>
+        <div className={s.zkpass_option_label}>Discord</div>
         <Input
           style={{ flex: 1 }}
           value={discord}
@@ -224,7 +225,7 @@ function Home() {
           }}
         />
       </div>
-      <div className="zkpass-describe">
+      <div className={s.zkpass_describe}>
         <div style={{ color: '#fff' }}>describe(option)</div>
         <TextArea
           rows={4}
@@ -236,7 +237,7 @@ function Home() {
           }}
         />
       </div>
-      <div className="zkpass-data">
+      <div className={s.zkpass_data}>
         <div style={{ color: '#fff' }}>Network</div>
         <Table
           dataSource={XHRList}
@@ -292,9 +293,9 @@ function Home() {
         {/*  </div>*/}
         {/*</div>*/}
       </div>
-      <div className="zkpass-footer">
+      <div className={s.zkpass_footer}>
         <button
-          className="zkpass-submit-btn"
+          className={s.zkpass_submit_btn}
           onClick={() => {
             Modal.confirm({
               title: 'Confirm',
@@ -308,6 +309,7 @@ function Home() {
         >
           Submit
         </button>
+      </div>
       </div>
       <Modal
         open={previewOpen}
