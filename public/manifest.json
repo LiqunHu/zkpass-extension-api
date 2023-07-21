@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "chrome-extension-react",
+  "name": "zkTemplate Kit",
   "version": "1.0.0",
-  "description": "chrome-extension-react",
+  "description": "zkTemplate Kit",
   "icons": {
     "16": "images/icon-16.png",
     "48": "images/icon-48.png",

@@ -28,12 +28,28 @@ const countryOptions = Object.keys(countries).map((key) => ({
 
 const categoryOptions = [
   {
-    value: 'bank',
-    label: 'bank'
+    value: 'Legal Identity',
+    label: 'Legal Identity'
   },
   {
-    value: 'game',
-    label: 'game'
+    value: 'Financial',
+    label: 'Financial'
+  },
+  {
+    value: 'Social',
+    label: 'Social'
+  },
+  {
+    value: 'Educational',
+    label: 'Educational'
+  },
+  {
+    value: 'Skills',
+    label: 'Skills'
+  },
+  {
+    value: 'On-chain Activities',
+    label: 'On-chain Activities'
   }
 ]
 
