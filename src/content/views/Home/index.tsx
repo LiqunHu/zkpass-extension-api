@@ -215,7 +215,8 @@ function Home() {
             dropdownStyle={{ zIndex }}
             style={{ flex: 1 }}
             options={countryOptions}
-            allowClear={true}
+            showSearch
+            allowClear
           />
         </div>
         <div className={s.zkpass_option}>
