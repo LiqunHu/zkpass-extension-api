@@ -83,15 +83,19 @@ function Home() {
 
   const handleCancel = () => setPreviewOpen(false)
   const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile)
-    }
-
-    setPreviewImage(file.url || (file.preview as string))
+    // if (!file.url && !file.preview) {
+    //   file.preview = await getBase64(file.originFileObj as RcFile)
+    // }
+ 
+    // setPreviewImage(file.url || (file.preview as string))
+    // setPreviewOpen(true)
+    // setPreviewTitle(
+    //   file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1)
+    // )
+    file.preview = await getBase64(file.originFileObj as RcFile)
+    setPreviewImage(file.preview as string)
     setPreviewOpen(true)
-    setPreviewTitle(
-      file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1)
-    )
+    setPreviewTitle(file.name)
   }
 
   const uploadRequest: UploadProps['customRequest'] = async (options) => {
