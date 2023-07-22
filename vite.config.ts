@@ -14,7 +14,7 @@ export default defineConfig({
     outDir: 'extension',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/main.tsx'),
+        popup: resolve(__dirname, 'popup.html'),
         content_script: resolve(__dirname, 'src/content/content_script.ts'),
         content: resolve(__dirname, 'src/content/content.tsx'),
         background: resolve(__dirname, 'src/background/index.ts')

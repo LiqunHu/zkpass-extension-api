@@ -10,7 +10,7 @@
   },
   "permissions": ["tabs", "contextMenus", "storage", "webRequest", "debugger" ],
   "action": {
-    "default_popup": "html/popup.html"
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "static/js/background.js",

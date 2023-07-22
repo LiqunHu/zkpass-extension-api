@@ -1,0 +1,10 @@
+.title {
+  color: black;
+}
+
+.desc {
+  color: gray;
+  width: 20rem;
+  line-height: 1.3;
+  padding-bottom: 2rem;
+}

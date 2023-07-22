@@ -7,7 +7,11 @@ import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { getCodeList } from 'country-list'
 import common from '@/utils/common'
-import { ExclamationCircleOutlined, FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
+import {
+  ExclamationCircleOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined
+} from '@ant-design/icons'
 const { TextArea } = Input
 const { Column } = Table
 const zIndex = 99999999999
@@ -86,7 +90,7 @@ function Home() {
     // if (!file.url && !file.preview) {
     //   file.preview = await getBase64(file.originFileObj as RcFile)
     // }
- 
+
     // setPreviewImage(file.url || (file.preview as string))
     // setPreviewOpen(true)
     // setPreviewTitle(
@@ -197,140 +201,144 @@ function Home() {
         )}
       </div>
       <div className={isSpread ? s.zkpass_container : s.zkpass_hidden}>
-      {contextHolder}
-      <div className={s.zkpass_uploadimg}>
-        <Upload
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={handlePreview}
-          onChange={handleUpload}
-          customRequest={uploadRequest}
-        >
-          {fileList.length >= 6 ? null : uploadButton}
-        </Upload>
-      </div>
-      <div className={s.zkpass_option_box}>
-        <div className={s.zkpass_option}>
-          <div className={s.zkpass_option_label}>Country:</div>
-          <Select
-            placeholder="Country"
-            value={selectedCountry}
-            onChange={setSelectedCountry}
-            dropdownStyle={{ zIndex }}
+        {contextHolder}
+        <div className={s.zkpass_uploadimg}>
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleUpload}
+            customRequest={uploadRequest}
+          >
+            {fileList.length >= 6 ? null : uploadButton}
+          </Upload>
+        </div>
+        <div className={s.zkpass_option_box}>
+          <div className={s.zkpass_option}>
+            <div className={s.zkpass_option_label}>Country:</div>
+            <Select
+              placeholder="Country"
+              value={selectedCountry}
+              onChange={setSelectedCountry}
+              dropdownStyle={{ zIndex }}
+              style={{ flex: 1 }}
+              options={countryOptions}
+              showSearch
+              allowClear
+            />
+          </div>
+          <div className={s.zkpass_option}>
+            <div className={s.zkpass_option_label}>Category:</div>
+            <Select
+              placeholder="Category"
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+              dropdownStyle={{ zIndex }}
+              style={{ flex: 1 }}
+              options={categoryOptions}
+              allowClear={true}
+            />
+          </div>
+        </div>
+        <div className={s.zkpass_option_box}>
+          <div className={s.zkpass_option_label}>Discord</div>
+          <Input
             style={{ flex: 1 }}
-            options={countryOptions}
-            showSearch
-            allowClear
+            value={discord}
+            onChange={(e) => {
+              setDiscord(e.target.value)
+            }}
           />
         </div>
-        <div className={s.zkpass_option}>
-          <div className={s.zkpass_option_label}>Category:</div>
-          <Select
-            placeholder="Category"
-            value={selectedCategory}
-            onChange={setSelectedCategory}
-            dropdownStyle={{ zIndex }}
-            style={{ flex: 1 }}
-            options={categoryOptions}
-            allowClear={true}
+        <div className={s.zkpass_describe}>
+          <div style={{ color: '#fff' }}>describe(option)</div>
+          <TextArea
+            rows={4}
+            placeholder="describe"
+            maxLength={200}
+            value={describe}
+            onChange={(e) => {
+              setDescribe(e.target.value)
+            }}
           />
         </div>
-      </div>
-      <div className={s.zkpass_option_box}>
-        <div className={s.zkpass_option_label}>Discord</div>
-        <Input
-          style={{ flex: 1 }}
-          value={discord}
-          onChange={(e) => {
-            setDiscord(e.target.value)
-          }}
-        />
-      </div>
-      <div className={s.zkpass_describe}>
-        <div style={{ color: '#fff' }}>describe(option)</div>
-        <TextArea
-          rows={4}
-          placeholder="describe"
-          maxLength={200}
-          value={describe}
-          onChange={(e) => {
-            setDescribe(e.target.value)
-          }}
-        />
-      </div>
-      <div className={s.zkpass_data}>
-        <div style={{ color: '#fff' }}>Network</div>
-        <Table
-          dataSource={XHRList}
-          size="small"
-          bordered={true}
-          pagination={false}
-          scroll={{ y: '15rem' }}
-        >
-          <Column
-            title="Name"
-            dataIndex="request"
-            key="name"
-            render={(request: any) => (
-              <div>{request.url.replace(/^.*\/\/[^\/]+/, '')}</div>
-            )}
-            ellipsis={true}
-            width={250}
-          />
-          <Column
-            title="Method"
-            dataIndex="request"
-            key="method"
-            render={(request: any) => <div>{request.method}</div>}
-            width={80}
-          />
-          <Column
-            title="Content"
-            dataIndex="response"
-            key="response"
-            render={(response: any) => (
-              <ReactJson src={response} collapsed={true} />
-            )}
-          />
-        </Table>
-        {/*<div className="zkpass-data-body">*/}
-        {/*  <div>*/}
-        {/*    {XHRList.map((item) => {*/}
-        {/*      return (*/}
-        {/*        <div*/}
-        {/*          onClick={() => {*/}
-        {/*            setMethod(item.request.method)*/}
-        {/*            setResponseData(item.response)*/}
-        {/*          }}*/}
-        {/*        >*/}
-        {/*          {item.request.url.replace(/^.*\/\/[^\/]+/, '')}*/}
-        {/*        </div>*/}
-        {/*      )*/}
-        {/*    })}*/}
-        {/*  </div>*/}
-        {/*  <div>*/}
-        {/*    <div>{method}</div>*/}
-        {/*    <ReactJson src={responseData} />*/}
-        {/*  </div>*/}
-        {/*</div>*/}
-      </div>
-      <div className={s.zkpass_footer}>
-        <button
-          className={s.zkpass_submit_btn}
-          onClick={() => {
-            Modal.confirm({
-              title: 'Confirm',
-              icon: <ExclamationCircleOutlined />,
-              content: 'Confirm to submit?',
-              okText: 'Yes',
-              cancelText: 'No',
-              onOk: handleSubmit 
-            })
-          }}
-        >
-          Submit
-        </button>
-      </div>
+        <div className={s.zkpass_data}>
+          <div style={{ color: '#fff' }}>Network</div>
+          <Table
+            dataSource={XHRList}
+            size="small"
+            bordered={true}
+            pagination={false}
+            scroll={{ y: '15rem' }}
+          >
+            <Column
+              title="Name"
+              dataIndex="request"
+              key="name"
+              render={(request: any) => (
+                <div>{request.url.replace(/^.*\/\/[^\/]+/, '')}</div>
+              )}
+              ellipsis={true}
+              width={250}
+            />
+            <Column
+              title="Method"
+              dataIndex="request"
+              key="method"
+              render={(request: any) => <div>{request.method}</div>}
+              width={80}
+            />
+            <Column
+              title="Content"
+              dataIndex="response"
+              key="response"
+              render={(response: any) => (
+                <ReactJson
+                  src={response}
+                  collapsed={true}
+                  displayDataTypes={false}
+                />
+              )}
+            />
+          </Table>
+          {/*<div className="zkpass-data-body">*/}
+          {/*  <div>*/}
+          {/*    {XHRList.map((item) => {*/}
+          {/*      return (*/}
+          {/*        <div*/}
+          {/*          onClick={() => {*/}
+          {/*            setMethod(item.request.method)*/}
+          {/*            setResponseData(item.response)*/}
+          {/*          }}*/}
+          {/*        >*/}
+          {/*          {item.request.url.replace(/^.*\/\/[^\/]+/, '')}*/}
+          {/*        </div>*/}
+          {/*      )*/}
+          {/*    })}*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <div>{method}</div>*/}
+          {/*    <ReactJson src={responseData} />*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+        </div>
+        <div className={s.zkpass_footer}>
+          <button
+            className={s.zkpass_submit_btn}
+            onClick={() => {
+              Modal.confirm({
+                title: 'Confirm',
+                icon: <ExclamationCircleOutlined />,
+                content: 'Confirm to submit?',
+                okText: 'Yes',
+                cancelText: 'No',
+                onOk: handleSubmit
+              })
+            }}
+          >
+            Submit
+          </button>
+        </div>
       </div>
       <Modal
         open={previewOpen}
